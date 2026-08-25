@@ -1,26 +1,188 @@
 @import "tailwindcss";
 
+/* Light palette — warm off-white base, ink text, construction orange accent.
+   Deliberately single-theme: the site is designed white, so no
+   prefers-color-scheme override. */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0a2337;
+  --surface: #f2f5f8;
+  --muted: #55677a;
+  --line: #dde5ec;
+  /* Brand yellow: fills, bars and badges only — never small text on white */
+  --accent: #f7c200;
+  --accent-hover: #dcae00;
+  /* Text/icon colour that sits ON the yellow */
+  --on-accent: #052940;
+  --ink: #052940;
+  --ghost: #e3ebf2;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-ink: var(--ink);
+  --color-ghost: var(--ghost);
+  --font-sans: var(--font-poppins);
   --font-mono: var(--font-geist-mono);
+  --animate-marquee: marquee 28s linear infinite;
+  --animate-marquee-slow: marquee 42s linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-marquee,
+  .animate-ping {
+    animation: none;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-poppins), "Poppins", Arial, Helvetica, sans-serif;
+}
+
+/* Scroll-driven reveals. Applied only where the browser supports view
+   timelines, so unsupported browsers render the content plainly visible
+   rather than hiding it behind an animation that never runs. */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateX(36px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+
+@keyframes reveal-left {
+  from {
+    opacity: 0;
+    transform: translateX(-48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes reveal-right {
+  from {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal,
+    .reveal-in,
+    .from-left,
+    .from-right {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+
+    .reveal-in {
+      animation-name: reveal-in;
+    }
+
+    .from-left {
+      animation-name: reveal-left;
+    }
+
+    .from-right {
+      animation-name: reveal-right;
+    }
+
+    /* Stagger: later items finish their reveal further up the scroll */
+    .reveal-1 {
+      animation-range: entry 0% entry 80%;
+    }
+
+    .reveal-2 {
+      animation-range: entry 0% entry 90%;
+    }
+
+    .reveal-3 {
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+
+/* Starting loader */
+@keyframes loader-fill {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes loader-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgb(247 194 0 / 0.55);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 18px rgb(247 194 0 / 0);
+  }
+}
+
+.loader-bar {
+  animation: loader-fill 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.loader-mark {
+  animation: loader-pulse 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-bar,
+  .loader-mark {
+    animation: none;
+  }
 }
