@@ -51,7 +51,7 @@ export default function BuildProcess() {
       {/* Oversized word behind the heading */}
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-14 text-center text-[clamp(4rem,15vw,11rem)] leading-none font-extrabold tracking-[-0.045em] text-[#f0eeeb] select-none"
+        className="pointer-events-none absolute inset-x-0 top-14 text-center text-[clamp(4rem,15vw,11rem)] leading-none font-extrabold tracking-[-0.045em] text-[#f3ecdc] select-none"
       >
         Structure
       </span>
@@ -99,12 +99,12 @@ export default function BuildProcess() {
                 />
                 <div
                   aria-hidden
-                  className="absolute inset-0 bg-gradient-to-t from-[#14110f]/35 to-transparent"
+                  className="absolute inset-0 bg-gradient-to-t from-[#06101f]/35 to-transparent"
                 />
               </div>
 
               {/* Number sits on the connector line */}
-              <span className="relative z-10 -mt-6 ml-5 flex h-12 w-12 items-center justify-center bg-accent text-[15px] font-bold text-on-accent tabular-nums shadow-[0_10px_26px_rgba(226,87,31,0.35)] transition-transform duration-300 group-hover:-translate-y-1">
+              <span className="relative z-10 -mt-6 ml-5 flex h-12 w-12 items-center justify-center bg-accent text-[15px] font-bold text-on-accent tabular-nums shadow-[0_10px_26px_rgba(201,154,46,0.4)] transition-transform duration-300 group-hover:-translate-y-1">
                 {String(i + 1).padStart(2, "0")}
               </span>
 

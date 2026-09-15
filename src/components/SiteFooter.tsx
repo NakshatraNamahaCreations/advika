@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 
 // Update on each yearly rollover — deliberately static so a cached build
@@ -66,31 +67,15 @@ export default function SiteFooter() {
         <div className="mx-auto grid max-w-[1180px] gap-12 md:grid-cols-2 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))] lg:gap-10">
           {/* Brand */}
           <div className="from-left">
-            <a href="#" className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-on-accent">
-                <svg
-                  viewBox="0 0 24 24"
-                  aria-hidden
-                  className="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M3 16a9 9 0 0 1 18 0" />
-                  <path d="M2 16h20v2H2z" />
-                  <path d="M10 7.6V16M14 7.6V16" />
-                </svg>
-              </span>
-              <span className="leading-tight">
-                <span className="block text-lg font-bold tracking-tight">
-                  Advika
-                </span>
-                <span className="block text-[10px] tracking-[0.18em] text-white/55 uppercase">
-                  Construction
-                </span>
-              </span>
+            <a href="#" aria-label="AdviconIN home" className="inline-block">
+              <Image
+                src="/logo-full.png"
+                alt="AdviconIN — Passion at building your dream"
+                width={900}
+                height={808}
+                unoptimized
+                className="h-36 w-auto md:h-40"
+              />
             </a>
 
             <p className="mt-6 max-w-[320px] text-[12px] leading-[1.85] text-white/55">
@@ -159,7 +144,7 @@ export default function SiteFooter() {
       {/* Legal bar */}
       <div className="border-t border-white/10 px-6 py-6 md:px-14">
         <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-4 text-[11px] text-white/45">
-          <p>© {YEAR} Advika Construction. All rights reserved.</p>
+          <p>© {YEAR} AdviconIN. All rights reserved.</p>
           <ul className="flex gap-6">
             <li>
               <a href="#" className="transition-colors hover:text-white">

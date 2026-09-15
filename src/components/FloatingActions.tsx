@@ -1,5 +1,5 @@
 const WHATSAPP_NUMBER = "919000000000";
-const WHATSAPP_MESSAGE = "Hi Advika, I would like to discuss a project.";
+const WHATSAPP_MESSAGE = "Hi AdviconIN, I would like to discuss a project.";
 
 export default function FloatingActions() {
   return (

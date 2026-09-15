@@ -81,7 +81,7 @@ export default function HeroBanner() {
       aria-roledescription="carousel"
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
-      className="relative isolate min-h-[580px] overflow-hidden lg:min-h-[720px]"
+      className="relative isolate min-h-[620px] overflow-hidden lg:min-h-[760px]"
     >
       {/* Background slides */}
       {SLIDES.map((s, i) => (
@@ -100,7 +100,7 @@ export default function HeroBanner() {
       {/* Warm charcoal wash so the type stays legible over the photo */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-gradient-to-r from-[#241d19]/92 via-[#241d19]/70 to-[#241d19]/45"
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-[#06101f]/92 via-[#06101f]/70 to-[#06101f]/45"
       />
 
       {/* Slide controls — bottom left, clear of the form column */}
@@ -112,7 +112,7 @@ export default function HeroBanner() {
         <SlideButton direction="next" onClick={() => go(1)} />
       </div>
 
-      <div className="mx-auto grid min-h-[580px] max-w-[1240px] items-center gap-10 px-6 pt-32 pb-20 md:px-10 lg:min-h-[720px] lg:pb-44 lg:grid-cols-[minmax(0,1fr)_360px]">
+      <div className="mx-auto grid min-h-[580px] max-w-[1240px] items-center gap-10 px-6 pt-48 pb-20 md:px-10 md:pt-52 lg:min-h-[760px] lg:pt-56 lg:pb-44 lg:grid-cols-[minmax(0,1fr)_360px]">
         {/* Left: headline */}
         <div>
           <p className="flex items-center gap-3 text-[11px] font-semibold tracking-[0.18em] text-white/85 uppercase">
@@ -200,7 +200,7 @@ function RequestForm() {
         // No endpoint is wired up yet — say so rather than faking a success state.
         setNotice("This form is not connected yet. Call +91 90000 00000.");
       }}
-      className="bg-[#1c1a19]/90 p-6 backdrop-blur-sm md:p-7"
+      className="bg-[#06101f]/90 p-6 backdrop-blur-sm md:p-7"
     >
       <h2 className="text-[13px] font-semibold text-white">Send a request</h2>
 
@@ -223,16 +223,16 @@ function RequestForm() {
             defaultValue=""
             className="w-full border border-white/15 bg-transparent px-4 py-3 text-[12px] text-white/80 outline-none focus:border-accent"
           >
-            <option value="" disabled className="bg-[#1c1a19]">
+            <option value="" disabled className="bg-[#06101f]">
               Project type
             </option>
-            <option value="house" className="bg-[#1c1a19]">
+            <option value="house" className="bg-[#06101f]">
               Private house
             </option>
-            <option value="commercial" className="bg-[#1c1a19]">
+            <option value="commercial" className="bg-[#06101f]">
               Commercial
             </option>
-            <option value="interior" className="bg-[#1c1a19]">
+            <option value="interior" className="bg-[#06101f]">
               Interior fit-out
             </option>
           </select>

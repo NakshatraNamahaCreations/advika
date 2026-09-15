@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 
 const NAV = [
@@ -38,32 +39,17 @@ export default function SiteHeader() {
       </div>
 
       {/* Main nav */}
-      <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-6 px-6 py-5 md:px-10">
-        <a href="#" className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-on-accent">
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.7"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M3 16a9 9 0 0 1 18 0" />
-              <path d="M2 16h20v2H2z" />
-              <path d="M10 7.6V16M14 7.6V16" />
-            </svg>
-          </span>
-          <span className="leading-tight text-white">
-            <span className="block text-lg font-bold tracking-tight">
-              Advika
-            </span>
-            <span className="block text-[10px] tracking-[0.18em] text-white/60 uppercase">
-              Construction
-            </span>
-          </span>
+      <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-6 px-6 py-3 md:px-10">
+        <a href="#" aria-label="AdviconIN home" className="block shrink-0">
+          <Image
+            src="/logo-full.png"
+            alt="AdviconIN — Passion at building your dream"
+            width={900}
+            height={808}
+            priority
+            unoptimized
+            className="h-24 w-auto md:h-28 lg:h-32"
+          />
         </a>
 
         <nav aria-label="Primary" className="hidden xl:block">

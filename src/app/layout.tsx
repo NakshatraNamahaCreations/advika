@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Advika Construction",
+  title: "AdviconIN — Passion at building your dream",
   description:
     "General contracting for residential, commercial and industrial projects since 1998.",
 };

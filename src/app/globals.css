@@ -1,21 +1,24 @@
 @import "tailwindcss";
 
-/* Light palette — warm off-white base, ink text, construction orange accent.
+/* AdviconIN palette — deep navy and gold from the logo, on a warm white base.
    Deliberately single-theme: the site is designed white, so no
    prefers-color-scheme override. */
 :root {
   --background: #ffffff;
-  --foreground: #0a2337;
-  --surface: #f2f5f8;
-  --muted: #55677a;
-  --line: #dde5ec;
-  /* Brand yellow: fills, bars and badges only — never small text on white */
-  --accent: #f7c200;
-  --accent-hover: #dcae00;
-  /* Text/icon colour that sits ON the yellow */
-  --on-accent: #052940;
-  --ink: #052940;
-  --ghost: #e3ebf2;
+  --foreground: #0b1627;
+  --surface: #f7f3ea;
+  --muted: #5d6370;
+  --line: #e7ddc9;
+  /* Brand gold, sampled from the AdviconIN logo gradient */
+  --accent: #c99a2e;
+  --accent-light: #f3dd9a;
+  --accent-deep: #a87a17;
+  --accent-hover: #b3861f;
+  /* Text/icon colour that sits ON the gold */
+  --on-accent: #06101f;
+  /* Logo background navy */
+  --ink: #06101f;
+  --ghost: #efe6d2;
 }
 
 @theme inline {
@@ -32,6 +35,18 @@
   --font-mono: var(--font-geist-mono);
   --animate-marquee: marquee 28s linear infinite;
   --animate-marquee-slow: marquee 42s linear infinite;
+}
+
+/* Solid bg-accent fills pick up the logo's gold gradient */
+@layer utilities {
+  .bg-accent {
+    background-image: linear-gradient(
+      135deg,
+      var(--accent-light) 0%,
+      var(--accent) 52%,
+      var(--accent-deep) 100%
+    );
+  }
 }
 
 @keyframes marquee {
@@ -164,11 +179,11 @@ body {
   0%,
   100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgb(247 194 0 / 0.55);
+    box-shadow: 0 0 0 0 rgb(201 154 46 / 0.5);
   }
   50% {
     transform: scale(1.06);
-    box-shadow: 0 0 0 18px rgb(247 194 0 / 0);
+    box-shadow: 0 0 0 18px rgb(201 154 46 / 0);
   }
 }
 

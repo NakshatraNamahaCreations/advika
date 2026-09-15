@@ -39,7 +39,7 @@ export default function WhyChooseUs() {
       {/* Faint blueprint grid for texture */}
       <div
         aria-hidden
-        className="absolute inset-0 opacity-[0.04] [background-image:linear-gradient(to_right,#14110f_1px,transparent_1px),linear-gradient(to_bottom,#14110f_1px,transparent_1px)] [background-size:64px_64px]"
+        className="absolute inset-0 opacity-[0.04] [background-image:linear-gradient(to_right,#06101f_1px,transparent_1px),linear-gradient(to_bottom,#06101f_1px,transparent_1px)] [background-size:64px_64px]"
       />
 
       <div className="relative mx-auto grid max-w-[1180px] items-center gap-14 lg:grid-cols-2 lg:gap-20">
@@ -139,7 +139,7 @@ export default function WhyChooseUs() {
             />
             <div
               aria-hidden
-              className="absolute inset-0 bg-gradient-to-t from-[#14110f]/45 to-transparent"
+              className="absolute inset-0 bg-gradient-to-t from-[#06101f]/45 to-transparent"
             />
           </div>
 
