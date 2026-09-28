@@ -1,14 +1,18 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
+// Homepage sections are linked with a leading "/" so they also work from
+// inner pages such as /about.
 const NAV = [
-  { label: "Home", href: "#" },
-  { label: "About Us", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "My Projects", href: "#projects" },
-  { label: "Contact Us", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
+  { label: "Services", href: "/#services" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Our Team", href: "/about#team" },
+  { label: "Contact Us", href: "/#contact" },
 ];
 
 export default function SiteHeader() {
@@ -16,71 +20,48 @@ export default function SiteHeader() {
 
   return (
     <header id="top" className="absolute inset-x-0 top-0 z-30">
-      {/* Utility bar */}
-      <div className="border-b border-white/10 bg-foreground/70 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-4 px-6 py-2.5 text-[11px] text-white/70 md:px-10">
-          <p className="truncate">
-            Transforming landscapes with over 25 years of expertise
-          </p>
-          <ul className="hidden items-center gap-6 lg:flex">
-            <li>
-              <a href="tel:+919000000000" className="hover:text-white">
-                +91 90000 00000
-              </a>
-            </li>
-            <li>
-              <a href="mailto:hello@advika.build" className="hover:text-white">
-                hello@advika.build
-              </a>
-            </li>
-            <li>Plot 118, Sector 44, Gurugram 122003</li>
-          </ul>
-        </div>
-      </div>
-
-      {/* Main nav */}
-      <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-6 px-6 py-3 md:px-10">
-        <a href="#" aria-label="AdviconIN home" className="block shrink-0">
+      <div className="mx-auto flex max-w-[1320px] items-center justify-between gap-6 px-6 py-4 md:px-10 md:py-5">
+        <Link href="/" aria-label="AdviconIN home" className="block shrink-0">
           <Image
             src="/logo-full.png"
             alt="AdviconIN — Passion at building your dream"
             width={900}
             height={808}
-            priority
+            preload
             unoptimized
-            className="h-24 w-auto md:h-28 lg:h-32"
+            className="h-20 w-auto md:h-24 lg:h-28"
           />
-        </a>
+        </Link>
 
-        <nav aria-label="Primary" className="hidden xl:block">
-          <ul className="flex items-center gap-8 text-[13px] font-medium text-white/85">
+        <nav aria-label="Primary" className="hidden lg:block">
+          <ul className="flex items-center gap-8 text-[15px] font-medium text-white/85 xl:gap-9">
             {NAV.map((item) => (
               <li key={item.label}>
-                <a
+                <Link
                   href={item.href}
-                  className="transition-colors hover:text-accent"
+                  className="transition-colors hover:text-white"
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
         </nav>
 
         <div className="flex items-center gap-3">
-          <a
-            href="#contact"
-            className="hidden bg-accent px-6 py-3 text-[12px] font-semibold tracking-[0.08em] text-on-accent uppercase transition-opacity hover:opacity-90 sm:inline-block"
+          <Link
+            href="/#contact"
+            className="hidden rounded-full bg-white px-6 py-3 text-[14px] font-semibold text-foreground transition-colors hover:bg-accent hover:text-on-accent sm:inline-block"
           >
-            Get a quote
-          </a>
+            Get a Quote
+          </Link>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="flex h-11 w-11 cursor-pointer items-center justify-center border border-white/25 text-white xl:hidden"
+            className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-white/30 text-white backdrop-blur-sm lg:hidden"
           >
             <svg
               viewBox="0 0 24 24"
@@ -105,20 +86,29 @@ export default function SiteHeader() {
         <nav
           id="mobile-nav"
           aria-label="Mobile"
-          className="mx-6 border border-white/15 bg-foreground/95 backdrop-blur-sm md:mx-10 xl:hidden"
+          className="mx-6 overflow-hidden rounded-2xl bg-white shadow-[0_24px_60px_rgba(0,0,0,0.3)] md:mx-10 lg:hidden"
         >
-          <ul className="divide-y divide-white/10 text-[14px] text-white">
+          <ul className="divide-y divide-line text-[15.5px] font-medium text-foreground">
             {NAV.map((item) => (
               <li key={item.label}>
-                <a
+                <Link
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="block px-5 py-3.5 hover:text-accent"
+                  className="block px-5 py-3.5 transition-colors hover:bg-surface"
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
+            <li className="sm:hidden">
+              <Link
+                href="/#contact"
+                onClick={() => setOpen(false)}
+                className="block px-5 py-3.5 font-semibold text-ink transition-colors hover:bg-surface"
+              >
+                Get a Quote
+              </Link>
+            </li>
           </ul>
         </nav>
       )}

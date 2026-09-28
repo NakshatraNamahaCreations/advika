@@ -44,7 +44,7 @@ export default function ServicesSection() {
       aria-labelledby="services-heading"
       className="bg-ink px-6 py-20 text-white md:px-14 lg:py-24"
     >
-      <div className="mx-auto max-w-[1180px]">
+      <div className="mx-auto max-w-[1280px]">
         {/* Heading row */}
         <div className="flex flex-wrap items-end justify-between gap-8">
           <div>

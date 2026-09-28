@@ -1,103 +1,49 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { COMPLETED, INTERIORS, type Project } from "@/lib/projects";
 
-type Project = {
-  id: string;
-  date: string;
-  created: string;
-  headline: string;
-  tag: string;
-  caption: string;
-  columns: [string, string];
-  blurb: string;
-  image: string;
-  alt: string;
-};
-
-const PROJECTS: Project[] = [
-  {
-    id: "01",
-    date: "20.11.2018",
-    created: "2017",
-    headline: "Comfortable zoning in one open space.",
-    tag: "Architecture",
-    caption: "The interior of the apartments.",
-    columns: [
-      "The interior of the apartments in the color of Siena.",
-      "Combinations give warmth to such strict materials.",
-    ],
-    blurb:
-      "This interior was created for a young couple and the main task was comfortable zoning in one open space.",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
-    alt: "Open plan living room with warm wooden finishes",
-  },
-  {
-    id: "02",
-    date: "04.03.2019",
-    created: "2018",
-    headline: "Quiet light across a working kitchen.",
-    tag: "Interior",
-    caption: "The kitchen and dining area.",
-    columns: [
-      "Matte stone surfaces carry the light without glare.",
-      "Deep green cabinetry anchors the open volume.",
-    ],
-    blurb:
-      "A compact kitchen built around a single island, designed so the room stays open while the work zone stays contained.",
-    image:
-      "https://images.unsplash.com/photo-1556909212-d5b604d0c90d?auto=format&fit=crop&w=1200&q=80",
-    alt: "Modern kitchen with dark cabinetry",
-  },
-  {
-    id: "03",
-    date: "17.09.2019",
-    created: "2019",
-    headline: "A living room that holds the evening.",
-    tag: "Residential",
-    caption: "The main living volume.",
-    columns: [
-      "Full height glazing pulls the terrace inside.",
-      "Soft textiles balance the concrete shell.",
-    ],
-    blurb:
-      "The brief asked for one uninterrupted volume, so storage and services were folded into the perimeter walls.",
-    image:
-      "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
-    alt: "Living room with large windows and soft seating",
-  },
-  {
-    id: "04",
-    date: "28.05.2020",
-    created: "2020",
-    headline: "Warm materials against a strict grid.",
-    tag: "Studio",
-    caption: "The studio and workspace.",
-    columns: [
-      "Oak and brass warm the orthogonal plan.",
-      "Every joint was detailed to stay visible.",
-    ],
-    blurb:
-      "A studio apartment where the structural grid was left exposed and the joinery was built to match its rhythm.",
-    image:
-      "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=1200&q=80",
-    alt: "Studio workspace with oak joinery",
-  },
+const TABS = [
+  { label: "Completed homes", badge: "Completed", projects: COMPLETED },
+  { label: "Interiors", badge: "Interiors", projects: INTERIORS },
 ];
 
-const CARD_ACTIVE = 384;
-const CARD_IDLE = 212;
-const CARD_GAP = 12;
-
 export default function ProjectsSection() {
-  const [index, setIndex] = useState(0);
-  const active = PROJECTS[index];
+  const [tab, setTab] = useState(0);
+  const [viewing, setViewing] = useState<Project | null>(null);
+  const track = useRef<HTMLUListElement>(null);
+  const [page, setPage] = useState(0);
+  const [pages, setPages] = useState(1);
 
-  const go = useCallback((step: number) => {
-    setIndex((i) => (i + step + PROJECTS.length) % PROJECTS.length);
-  }, []);
+  const { projects, badge } = TABS[tab];
+
+  // The track is a scroll-snap container, so paging is just a scroll: the
+  // browser handles touch swipes, and the arrows and dots drive the same thing.
+  useEffect(() => {
+    const el = track.current;
+    if (!el) return;
+
+    const measure = () => {
+      const width = el.clientWidth || 1;
+      setPages(Math.max(1, Math.round(el.scrollWidth / width)));
+      setPage(Math.round(el.scrollLeft / width));
+    };
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    el.addEventListener("scroll", measure, { passive: true });
+    return () => {
+      observer.disconnect();
+      el.removeEventListener("scroll", measure);
+    };
+  }, [tab]);
+
+  const goto = (target: number) => {
+    const el = track.current;
+    if (!el) return;
+    el.scrollTo({ left: target * el.clientWidth, behavior: "smooth" });
+  };
 
   return (
     <section
@@ -105,146 +51,375 @@ export default function ProjectsSection() {
       aria-labelledby="projects-heading"
       className="relative overflow-hidden bg-background px-6 py-16 text-foreground md:px-14 lg:py-20"
     >
-      <div className="mx-auto max-w-[1180px]">
+      <div className="mx-auto max-w-[1280px]">
         {/* Section heading */}
-        <div className="from-left mb-12">
-          <p className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-ink uppercase">
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden
-              className="h-3.5 w-3.5"
-              fill="currentColor"
+        <div className="flex flex-wrap items-end justify-between gap-8">
+          <div className="from-left">
+            <p className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-ink uppercase">
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden
+                className="h-3.5 w-3.5"
+                fill="currentColor"
+              >
+                <path d="M13 2L4.5 13.5H11l-1 8.5 8.5-11.5H12z" />
+              </svg>
+              Our portfolio
+            </p>
+
+            <h2
+              id="projects-heading"
+              className="mt-5 text-[clamp(1.6rem,3.4vw,2.35rem)] leading-[1.2] font-extrabold tracking-[-0.02em] uppercase"
             >
-              <path d="M13 2L4.5 13.5H11l-1 8.5 8.5-11.5H12z" />
-            </svg>
-            Selected work
-          </p>
+              Our projects
+            </h2>
 
-          <h2
-            id="projects-heading"
-            className="mt-5 text-[clamp(1.6rem,3.4vw,2.35rem)] leading-[1.2] font-extrabold tracking-[-0.02em] uppercase"
-          >
-            Our projects
-          </h2>
+            <span aria-hidden className="mt-6 block h-[3px] w-14 bg-accent" />
 
-          <span aria-hidden className="mt-6 block h-[3px] w-14 bg-accent" />
-        </div>
+            <p className="mt-6 max-w-[460px] text-[13px] leading-[1.8] text-muted">
+              Over 55 projects delivered across Bengaluru and Ramanagara, with
+              15 more underway. Open any project to see every photo.
+            </p>
+          </div>
 
-        {/* Top row: meta / headline / description */}
-        <div className="grid grid-cols-12 gap-x-8 gap-y-10">
-          <dl className="from-left col-span-12 flex gap-10 md:col-span-2 md:flex-col md:gap-6">
-            <Meta label="Date" value={active.date} />
-            <Meta label="Created" value={active.created} />
-          </dl>
+          {/* Filter and arrows */}
+          <div className="from-right flex flex-col items-start gap-5 sm:items-end">
+            <div className="flex flex-wrap gap-2">
+              {TABS.map((t, i) => (
+                <button
+                  key={t.label}
+                  type="button"
+                  onClick={() => {
+                    setTab(i);
+                    track.current?.scrollTo({ left: 0 });
+                  }}
+                  aria-pressed={i === tab}
+                  className={`cursor-pointer px-5 py-3 text-[11px] font-semibold tracking-[0.14em] uppercase transition-colors ${
+                    i === tab
+                      ? "bg-accent text-on-accent"
+                      : "border border-line text-foreground hover:border-foreground"
+                  }`}
+                >
+                  {t.label}
+                  <span className="ml-2 tabular-nums opacity-70">
+                    {t.projects.length}
+                  </span>
+                </button>
+              ))}
+            </div>
 
-          <h3 className="col-span-12 text-4xl font-bold leading-[1.06] tracking-[-0.02em] md:col-span-6 md:text-5xl lg:text-[3.4rem]">
-            {active.headline}
-          </h3>
-
-          <div className="from-right col-span-12 md:col-span-4">
-            <h4 className="text-[13px] font-semibold">{active.tag}</h4>
-            <div className="mt-3 grid grid-cols-2 gap-5 text-[11px] leading-[1.6] text-muted">
-              <p>{active.columns[0]}</p>
-              <p>{active.columns[1]}</p>
+            <div className="flex items-center gap-3">
+              <PageButton
+                direction="prev"
+                disabled={page === 0}
+                onClick={() => goto(page - 1)}
+              />
+              <span className="text-[12px] text-muted tabular-nums">
+                <span className="font-semibold text-foreground">
+                  {String(page + 1).padStart(2, "0")}
+                </span>
+                {" / "}
+                {String(pages).padStart(2, "0")}
+              </span>
+              <PageButton
+                direction="next"
+                disabled={page >= pages - 1}
+                onClick={() => goto(page + 1)}
+              />
             </div>
           </div>
         </div>
 
         {/* Carousel */}
-        <div className="reveal relative mt-14 lg:pl-[16%]">
-          <div className="overflow-hidden">
-            <ul
-              className="flex transition-transform duration-500 ease-out"
-              style={{
-                gap: CARD_GAP,
-                transform: `translateX(-${index * (CARD_IDLE + CARD_GAP)}px)`,
-              }}
+        {/* Gutters come from padding inside each card, not a flex gap, so one
+            page of scrolling is always a whole number of cards. */}
+        <ul
+          ref={track}
+          aria-label={`${TABS[tab].label} projects`}
+          className="mt-12 -mx-2 flex snap-x snap-mandatory overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] motion-reduce:scroll-auto [&::-webkit-scrollbar]:hidden"
+        >
+          {projects.map((project) => (
+            <li
+              key={project.id}
+              className="shrink-0 basis-full snap-start px-2 sm:basis-1/2 lg:basis-1/3"
             >
-              {PROJECTS.map((project, i) => {
-                const isActive = i === index;
-                return (
-                  <li
-                    key={project.id}
-                    className="relative h-[196px] shrink-0 overflow-hidden transition-[width,opacity] duration-500 ease-out"
-                    style={{
-                      width: isActive ? CARD_ACTIVE : CARD_IDLE,
-                      opacity: i < index ? 0 : 1,
-                    }}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => setIndex(i)}
-                      aria-label={`Show project ${project.id}: ${project.tag}`}
-                      aria-current={isActive}
-                      className="group block h-full w-full cursor-pointer"
-                    >
-                      <Image
-                        src={project.image}
-                        alt={project.alt}
-                        fill
-                        sizes="384px"
-                        className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                        priority={i === 0}
-                      />
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+              <ProjectCard
+                project={project}
+                badge={badge}
+                onOpen={() => setViewing(project)}
+              />
+            </li>
+          ))}
+        </ul>
 
-          {/* Caption card overlapping the carousel */}
-          <div className="pointer-events-none absolute bottom-[-22px] left-0 flex w-[340px] max-w-full items-center justify-between bg-foreground px-5 py-4 text-white shadow-[0_18px_40px_rgba(20,17,15,0.18)] lg:left-[16%]">
-            <div>
-              <p className="text-[13px] font-semibold">{active.tag}</p>
-              <p className="mt-1 text-[11px] text-white/60">{active.caption}</p>
-            </div>
-            <div className="pointer-events-auto flex items-center gap-4">
-              <Arrow direction="prev" onClick={() => go(-1)} />
-              <Arrow direction="next" onClick={() => go(1)} />
-            </div>
+        {/* Dots, while there are few enough to stay tappable */}
+        {pages > 1 && pages <= 8 && (
+          <div className="mt-8 flex items-center justify-center gap-2.5">
+            {Array.from({ length: pages }, (_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => goto(i)}
+                aria-label={`Go to slide ${i + 1} of ${pages}`}
+                aria-current={i === page}
+                className={`h-2 cursor-pointer rounded-full transition-all duration-300 ${
+                  i === page
+                    ? "w-7 bg-accent"
+                    : "w-2 bg-line hover:bg-muted"
+                }`}
+              />
+            ))}
           </div>
-        </div>
-
-        {/* Bottom row: blurb / slide number */}
-        <div className="mt-16 grid grid-cols-12 items-end gap-8">
-          <div className="col-span-12 md:col-span-6 lg:col-span-5">
-            <p className="max-w-[380px] text-[11px] leading-[1.7] text-muted">
-              {active.blurb}
-            </p>
-          </div>
-
-          <div className="col-span-12 flex items-end justify-end gap-4 md:col-span-6 lg:col-span-7">
-            <span aria-hidden className="h-14 w-px rotate-[20deg] bg-line" />
-            <span className="text-5xl font-light leading-none tracking-tight tabular-nums lg:text-6xl">
-              {active.id}
-            </span>
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden
-              className="mb-1 h-5 w-5 stroke-current text-muted"
-              fill="none"
-              strokeWidth="1.5"
-            >
-              <path d="M17 7L7 17M7 17h7M7 17v-7" />
-            </svg>
-          </div>
-        </div>
+        )}
       </div>
+
+      {viewing && (
+        <Lightbox project={viewing} onClose={() => setViewing(null)} />
+      )}
     </section>
   );
 }
 
-function Meta({ label, value }: { label: string; value: string }) {
+function PageButton({
+  direction,
+  disabled,
+  onClick,
+}: {
+  direction: "prev" | "next";
+  disabled: boolean;
+  onClick: () => void;
+}) {
   return (
-    <div>
-      <dt className="text-[10px] text-muted">{label}</dt>
-      <dd className="mt-1 text-[11px] text-foreground">{value}</dd>
-    </div>
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={direction === "prev" ? "Previous projects" : "Next projects"}
+      className="flex h-11 w-11 cursor-pointer items-center justify-center border border-line text-foreground transition-colors hover:border-accent hover:bg-accent hover:text-on-accent disabled:cursor-default disabled:opacity-35 disabled:hover:border-line disabled:hover:bg-transparent disabled:hover:text-foreground"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden
+        className="h-4 w-4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d={direction === "prev" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"} />
+      </svg>
+    </button>
   );
 }
 
-function Arrow({
+function ProjectCard({
+  project,
+  badge,
+  onOpen,
+}: {
+  project: Project;
+  badge: string;
+  onOpen: () => void;
+}) {
+  const [cover] = project.photos;
+  const count = project.photos.length;
+
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      aria-label={`View ${project.subtitle.toLowerCase()}, ${project.title}: ${count} ${count === 1 ? "photo" : "photos"}`}
+      className="group relative block aspect-[4/3] w-full cursor-pointer overflow-hidden bg-surface text-left"
+    >
+      <Image
+        src={cover.src}
+        alt={cover.alt}
+        fill
+        sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+        className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-gradient-to-t from-[#06101f]/85 via-[#06101f]/15 to-transparent"
+      />
+
+      <span className="absolute top-0 left-0 bg-accent px-3.5 py-1.5 text-[10px] font-semibold tracking-[0.16em] text-on-accent uppercase">
+        {badge}
+      </span>
+
+      <span className="absolute right-5 bottom-4 left-5 flex items-end justify-between gap-4 text-white">
+        <span className="min-w-0">
+          <span className="flex items-center gap-1.5 text-[15px] leading-[1.3] font-semibold">
+            {badge === "Completed" && <PinIcon />}
+            <span className="truncate">{project.title}</span>
+          </span>
+          <span className="mt-1 block text-[11px] text-white/65">
+            {project.subtitle} · {count} {count === 1 ? "photo" : "photos"}
+          </span>
+        </span>
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center border border-white/35 transition-colors group-hover:border-accent group-hover:bg-accent group-hover:text-on-accent">
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+        </span>
+      </span>
+    </button>
+  );
+}
+
+function Lightbox({
+  project,
+  onClose,
+}: {
+  project: Project;
+  onClose: () => void;
+}) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const [index, setIndex] = useState(0);
+  const { photos } = project;
+  const photo = photos[index];
+
+  const go = useCallback(
+    (step: number) => {
+      setIndex((i) => (i + step + photos.length) % photos.length);
+    },
+    [photos.length],
+  );
+
+  // Native modal dialog: focus trap, Esc to close and a top-layer backdrop.
+  // Cleanup must not call close(): that fires onClose, which would shut the
+  // viewer straight away when Strict Mode re-runs this effect. Unmounting
+  // removes the dialog from the top layer anyway.
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (!dialog.open) dialog.showModal();
+
+    const { style } = document.documentElement;
+    const previous = style.overflow;
+    style.overflow = "hidden";
+
+    return () => {
+      style.overflow = previous;
+    };
+  }, []);
+
+  return (
+    <dialog
+      ref={dialogRef}
+      aria-label={`${project.subtitle}, ${project.title}`}
+      onClose={onClose}
+      onKeyDown={(event) => {
+        if (photos.length < 2) return;
+        if (event.key === "ArrowLeft") go(-1);
+        if (event.key === "ArrowRight") go(1);
+      }}
+      className="fixed inset-0 m-0 h-full max-h-none w-full max-w-none bg-ink p-0 text-white backdrop:bg-ink"
+    >
+      <div className="flex h-full flex-col px-4 py-4 md:px-10 md:py-6">
+        {/* Header */}
+        <div className="flex items-center justify-between gap-6">
+          <div className="min-w-0">
+            <p className="text-[10px] font-semibold tracking-[0.18em] text-accent uppercase">
+              {project.subtitle}
+            </p>
+            <h3 className="mt-1 truncate text-[16px] font-semibold md:text-[18px]">
+              {project.title}
+            </h3>
+          </div>
+
+          <div className="flex items-center gap-5">
+            <span className="text-[12px] text-white/60 tabular-nums">
+              {index + 1} / {photos.length}
+            </span>
+            <button
+              type="button"
+              onClick={() => dialogRef.current?.close()}
+              aria-label="Close gallery"
+              autoFocus
+              className="flex h-11 w-11 cursor-pointer items-center justify-center border border-white/30 transition-colors hover:border-accent hover:bg-accent hover:text-on-accent"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              >
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Photo */}
+        <div className="relative mt-4 min-h-0 flex-1">
+          <Image
+            key={photo.src}
+            src={photo.src}
+            alt={photo.alt}
+            fill
+            sizes="100vw"
+            className="object-contain"
+          />
+
+          {photos.length > 1 && (
+            <>
+              <StepButton direction="prev" onClick={() => go(-1)} />
+              <StepButton direction="next" onClick={() => go(1)} />
+            </>
+          )}
+        </div>
+
+        <p className="mt-3 text-center text-[12px] leading-[1.6] text-white/60">
+          {photo.alt}
+        </p>
+
+        {/* Thumbnails */}
+        {photos.length > 1 && (
+          <ul className="mt-4 flex justify-center gap-2">
+            {photos.map((p, i) => (
+              <li key={p.src}>
+                <button
+                  type="button"
+                  onClick={() => setIndex(i)}
+                  aria-label={`Show photo ${i + 1}`}
+                  aria-current={i === index}
+                  className={`relative block h-14 w-20 cursor-pointer overflow-hidden transition-opacity md:h-16 md:w-24 ${
+                    i === index
+                      ? "ring-2 ring-accent"
+                      : "opacity-50 hover:opacity-100"
+                  }`}
+                >
+                  <Image
+                    src={p.src}
+                    alt=""
+                    fill
+                    sizes="96px"
+                    className="object-cover"
+                  />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </dialog>
+  );
+}
+
+function StepButton({
   direction,
   onClick,
 }: {
@@ -255,18 +430,41 @@ function Arrow({
     <button
       type="button"
       onClick={onClick}
-      aria-label={direction === "prev" ? "Previous project" : "Next project"}
-      className="cursor-pointer text-white/50 transition-colors hover:text-white"
+      aria-label={direction === "prev" ? "Previous photo" : "Next photo"}
+      className={`absolute top-1/2 flex h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center bg-[#06101f]/70 text-white transition-colors hover:bg-accent hover:text-on-accent ${
+        direction === "prev" ? "left-0" : "right-0"
+      }`}
     >
       <svg
         viewBox="0 0 24 24"
-        className="h-4 w-4 stroke-current"
+        aria-hidden
+        className="h-5 w-5"
         fill="none"
-        strokeWidth="1.5"
-        strokeLinecap="square"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
         <path d={direction === "prev" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"} />
       </svg>
     </button>
+  );
+}
+
+function PinIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden
+      className="h-3.5 w-3.5 shrink-0 text-accent"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" />
+      <circle cx="12" cy="9.5" r="2.5" />
+    </svg>
   );
 }

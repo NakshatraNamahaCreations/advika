@@ -1,25 +1,29 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { ReactNode } from "react";
+import { EMAIL, EMAIL_HREF, PHONE, PHONE_HREF } from "@/lib/contact";
 
 // Update on each yearly rollover — deliberately static so a cached build
 // can never show a stale year computed at build time.
 const YEAR = 2026;
 
 const COMPANY = [
-  { label: "About us", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "My projects", href: "#projects" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "News & insight", href: "#news" },
-  { label: "FAQ", href: "#faq" },
+  { label: "About us", href: "/about" },
+  { label: "Services", href: "/#services" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Awards", href: "/#achievements" },
+  { label: "Our team", href: "/about#team" },
+  { label: "Testimonials", href: "/#testimonials" },
+  { label: "News & insight", href: "/#news" },
+  { label: "FAQ", href: "/#faq" },
 ];
 
 const SERVICES = [
-  { label: "General contracting", href: "#services" },
-  { label: "Design & build", href: "#services" },
-  { label: "Exterior & façade", href: "#services" },
-  { label: "Interior fit-out", href: "#services" },
-  { label: "Landscape works", href: "#services" },
+  { label: "Architectural design & planning", href: "/#services" },
+  { label: "Construction & project execution", href: "/#services" },
+  { label: "Turnkey solutions", href: "/#services" },
+  { label: "3D visualization", href: "/#services" },
+  { label: "Interiors", href: "/#projects" },
 ];
 
 const SOCIAL: { label: string; href: string; icon: ReactNode }[] = [
@@ -30,17 +34,17 @@ const SOCIAL: { label: string; href: string; icon: ReactNode }[] = [
 
 export default function SiteFooter() {
   return (
-    <footer id="contact" className="relative bg-ink text-white">
+    <footer className="relative overflow-x-clip bg-ink text-white">
       {/* Closing call to action */}
       <div className="border-b border-white/10 px-6 py-12 md:px-14">
-        <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-6">
+        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-6">
           <h2 className="max-w-[520px] text-[clamp(1.35rem,2.8vw,1.9rem)] leading-[1.25] font-extrabold tracking-[-0.015em] uppercase">
             Let&apos;s build something
             <span className="text-accent"> that lasts</span>
           </h2>
 
           <a
-            href="tel:+919000000000"
+            href={PHONE_HREF}
             className="group inline-flex items-center gap-4 bg-accent py-3.5 pr-3.5 pl-7 text-[11px] font-semibold tracking-[0.16em] text-on-accent uppercase transition-opacity hover:opacity-90"
           >
             Talk to us
@@ -64,10 +68,10 @@ export default function SiteFooter() {
 
       {/* Columns */}
       <div className="px-6 py-16 md:px-14">
-        <div className="mx-auto grid max-w-[1180px] gap-12 md:grid-cols-2 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))] lg:gap-10">
+        <div className="mx-auto grid max-w-[1280px] gap-12 md:grid-cols-2 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))] lg:gap-10">
           {/* Brand */}
           <div className="from-left">
-            <a href="#" aria-label="AdviconIN home" className="inline-block">
+            <Link href="/" aria-label="AdviconIN home" className="inline-block">
               <Image
                 src="/logo-full.png"
                 alt="AdviconIN — Passion at building your dream"
@@ -76,12 +80,12 @@ export default function SiteFooter() {
                 unoptimized
                 className="h-36 w-auto md:h-40"
               />
-            </a>
+            </Link>
 
             <p className="mt-6 max-w-[320px] text-[12px] leading-[1.85] text-white/55">
-              General contracting for residential, commercial and industrial
-              projects since 1998. In-house crews, fixed schedules, and a snag
-              list that closes in weeks.
+              Advika Constructions &amp; Architects, established in 2016. A
+              design-build approach that integrates architectural design and
+              construction services for exceptional results.
             </p>
 
             <ul className="mt-7 flex gap-3">
@@ -110,23 +114,23 @@ export default function SiteFooter() {
 
             <address className="mt-6 space-y-4 text-[12px] leading-[1.7] text-white/55 not-italic">
               <p>
-                Plot 118, Sector 44
+                Projects across Bengaluru, Ramanagara,
                 <br />
-                Gurugram 122003, Haryana
+                Channapatna, Bidadi and Makali
               </p>
               <p>
                 <a
-                  href="tel:+919000000000"
+                  href={PHONE_HREF}
                   className="transition-colors hover:text-accent"
                 >
-                  +91 90000 00000
+                  {PHONE}
                 </a>
                 <br />
                 <a
-                  href="mailto:hello@advika.build"
+                  href={EMAIL_HREF}
                   className="transition-colors hover:text-accent"
                 >
-                  hello@advika.build
+                  {EMAIL}
                 </a>
               </p>
             </address>
@@ -143,8 +147,11 @@ export default function SiteFooter() {
 
       {/* Legal bar */}
       <div className="border-t border-white/10 px-6 py-6 md:px-14">
-        <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-4 text-[11px] text-white/45">
-          <p>© {YEAR} AdviconIN. All rights reserved.</p>
+        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-4 text-[11px] text-white/45">
+          <p>
+            © {YEAR} Advika Constructions &amp; Architects (AdviconIN). All
+            rights reserved.
+          </p>
           <ul className="flex gap-6">
             <li>
               <a href="#" className="transition-colors hover:text-white">
@@ -178,9 +185,12 @@ function FooterNav({
       <ul className="mt-6 space-y-3 text-[12px] text-white/55">
         {links.map((link) => (
           <li key={link.label}>
-            <a href={link.href} className="transition-colors hover:text-accent">
+            <Link
+              href={link.href}
+              className="transition-colors hover:text-accent"
+            >
               {link.label}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

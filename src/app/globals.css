@@ -165,30 +165,17 @@ body {
   }
 }
 
-/* Starting loader */
-@keyframes loader-fill {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
+/* Starting loader — the bar is filled from the real percentage, not animated */
 @keyframes loader-pulse {
   0%,
   100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgb(201 154 46 / 0.5);
+    opacity: 0.72;
+    transform: scale(0.985);
   }
   50% {
-    transform: scale(1.06);
-    box-shadow: 0 0 0 18px rgb(201 154 46 / 0);
+    opacity: 1;
+    transform: scale(1.015);
   }
-}
-
-.loader-bar {
-  animation: loader-fill 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 .loader-mark {
@@ -196,7 +183,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .loader-bar,
   .loader-mark {
     animation: none;
   }

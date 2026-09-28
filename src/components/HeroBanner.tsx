@@ -1,401 +1,275 @@
-"use client";
-
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 
-type Slide = {
-  title: string;
-  eyebrow: string;
-  solid: string;
-  outline: string;
-  body: string;
-  image: string;
-  alt: string;
-};
-
-const SLIDES: Slide[] = [
-  {
-    title: "Residential contracting",
-    eyebrow: "Leading global builder and developer",
-    solid: "Your Dream",
-    outline: "Building",
-    body: "Design-led general contracting for residential, commercial and industrial projects — delivered by in-house crews on a fixed schedule.",
-    image:
-      "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1900&q=80",
-    alt: "Excavators working across an active construction site",
-  },
-  {
-    title: "Turnkey design & build",
-    eyebrow: "Turnkey design and build contracts",
-    solid: "Built To",
-    outline: "Endure",
-    body: "Structure, MEP and interiors under one contract, one programme and one accountable site team, from groundworks through to handover.",
-    image:
-      "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1900&q=80",
-    alt: "Engineers reviewing drawings on a building site",
-  },
-  {
-    title: "Landmark projects",
-    eyebrow: "Twenty five years on site",
-    solid: "We Raise",
-    outline: "Landmarks",
-    body: "Over 400 completed projects across nine states, with safety records and handover dates we publish rather than promise.",
-    image:
-      "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1900&q=80",
-    alt: "Workers on a high rise construction site at dusk",
-  },
+// What we do, shown where a template would put partner logos.
+const STRIP: { label: string; icon: ReactNode }[] = [
+  { label: "Architecture", icon: <PlanIcon /> },
+  { label: "Construction", icon: <BuildingIcon /> },
+  { label: "Interiors", icon: <SofaIcon /> },
+  { label: "Turnkey", icon: <KeyIcon /> },
+  { label: "3D Visualization", icon: <CubeIcon /> },
+  { label: "Award winning", icon: <TrophyIcon /> },
 ];
 
-const AUTOPLAY_MS = 6000;
-
 export default function HeroBanner() {
-  const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
-
-  // Hovering a control should hold the slide; hovering the photo should not.
-  const holdOnHover = {
-    onMouseEnter: () => setPaused(true),
-    onMouseLeave: () => setPaused(false),
-  };
-  const slide = SLIDES[index];
-
-  const go = useCallback((step: number) => {
-    setIndex((i) => (i + step + SLIDES.length) % SLIDES.length);
-  }, []);
-
-  useEffect(() => {
-    if (paused) return;
-    // Hold on the current slide for anyone who has asked for reduced motion.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const timer = window.setTimeout(
-      () => setIndex((i) => (i + 1) % SLIDES.length),
-      AUTOPLAY_MS,
-    );
-    return () => window.clearTimeout(timer);
-  }, [index, paused]);
-
   return (
     <section
       aria-label="Introduction"
-      aria-roledescription="carousel"
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
-      className="relative isolate min-h-[620px] overflow-hidden lg:min-h-[760px]"
+      className="relative isolate flex min-h-[max(720px,100svh)] flex-col overflow-hidden"
     >
-      {/* Background slides */}
-      {SLIDES.map((s, i) => (
-        <Image
-          key={s.solid}
-          src={s.image}
-          alt={s.alt}
-          fill
-          priority={i === 0}
-          sizes="100vw"
-          className={`-z-20 object-cover transition-opacity duration-700 ${
-            i === index ? "opacity-100" : "opacity-0"
-          }`}
-        />
-      ))}
-      {/* Warm charcoal wash so the type stays legible over the photo */}
+      <Image
+        src="/profile/hero-p28-2.jpg"
+        alt="Completed Advika Constructions house in Bengaluru with a white façade and gated entrance"
+        fill
+        preload
+        sizes="100vw"
+        className="-z-20 object-cover object-[72%_center]"
+      />
+      {/* Warm wash: deep on the left for the copy, clear over the house */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-gradient-to-r from-[#06101f]/92 via-[#06101f]/70 to-[#06101f]/45"
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-[#140c05]/90 via-[#140c05]/50 to-[#140c05]/5"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 bg-gradient-to-t from-black/75 via-transparent to-black/25"
       />
 
-      {/* Slide controls — bottom left, clear of the form column */}
-      <div
-        {...holdOnHover}
-        className="absolute bottom-8 left-6 z-20 hidden gap-2 md:flex md:left-10"
-      >
-        <SlideButton direction="prev" onClick={() => go(-1)} />
-        <SlideButton direction="next" onClick={() => go(1)} />
-      </div>
+      <div className="mx-auto grid w-full max-w-[1320px] flex-1 gap-10 px-6 pt-32 pb-10 md:px-10 md:pt-40 lg:grid-cols-[minmax(0,1fr)_330px] lg:gap-16 lg:pt-44">
+        {/* Left: headline, call to action and stat card */}
+        <div className="flex flex-col justify-between gap-12">
+          <div>
+            <h1 className="text-[clamp(2.6rem,6.4vw,5.4rem)] leading-[1.02] font-bold tracking-[-0.02em] text-white uppercase">
+              Build your
+              <br />
+              {/* Second line picks up the gold gradient from the logo */}
+              <span className="bg-accent bg-clip-text text-transparent">
+                dream home
+              </span>
+            </h1>
 
-      <div className="mx-auto grid min-h-[580px] max-w-[1240px] items-center gap-10 px-6 pt-48 pb-20 md:px-10 md:pt-52 lg:min-h-[760px] lg:pt-56 lg:pb-44 lg:grid-cols-[minmax(0,1fr)_360px]">
-        {/* Left: headline */}
-        <div>
-          <p className="flex items-center gap-3 text-[11px] font-semibold tracking-[0.18em] text-white/85 uppercase">
-            <span className="h-px w-8 bg-accent" aria-hidden />
-            {slide.eyebrow}
-          </p>
+            <p className="mt-5 text-[clamp(1rem,1.5vw,1.2rem)] text-white/85">
+              Innovative design. Precise construction.
+            </p>
 
-          <h1 className="mt-6 text-[clamp(2.5rem,7.5vw,5.5rem)] leading-[0.95] font-black tracking-[-0.03em] text-white uppercase">
-            {slide.solid}
-            <br />
-            <TypedWord
-              text={slide.outline}
-              className="text-transparent [-webkit-text-stroke:2px_rgba(255,255,255,0.9)]"
-            />
-          </h1>
-
-          <p className="mt-8 max-w-[440px] text-[13px] leading-[1.8] text-white/70">
-            {slide.body}
-          </p>
-
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <CtaButton
-              href="#services"
-              label="View services"
-              variant="accent"
-            />
-            <CtaButton href="#about" label="About company" variant="ghost" />
+            <a
+              href="#projects"
+              className="group mt-9 inline-flex items-center gap-3"
+            >
+              <span className="rounded-full bg-white px-7 py-3.5 text-[14px] font-semibold text-foreground transition-colors group-hover:bg-surface">
+                Explore Projects
+              </span>
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-on-accent transition-transform duration-300 group-hover:translate-x-1">
+                <ArrowIcon className="h-4 w-4" />
+              </span>
+            </a>
           </div>
+
+          <StatCard />
         </div>
 
-        {/* Right: request form */}
-        <div {...holdOnHover}>
-          <RequestForm />
-        </div>
+        {/* Right: featured project */}
+        <FeaturedCard />
       </div>
 
-      {/* Slide index — white bar flush to the bottom-right corner */}
-      <ul
-        {...holdOnHover}
-        className="absolute right-0 bottom-0 z-20 hidden w-[min(760px,74%)] grid-cols-3 bg-background lg:grid"
-      >
-        {SLIDES.map((s, i) => {
-          const isActive = i === index;
-          return (
-            <li key={s.title}>
-              <button
-                type="button"
-                onClick={() => setIndex(i)}
-                aria-label={`Go to slide ${i + 1}: ${s.title}`}
-                aria-current={isActive}
-                className="group h-full w-full cursor-pointer px-7 py-7 text-left"
-              >
-                <span
-                  className={`block text-[11px] tabular-nums transition-colors ${
-                    isActive ? "text-accent" : "text-muted"
-                  }`}
-                >
-                  {String(i + 1).padStart(2, "0")}.
-                </span>
-                <span
-                  className={`mt-3 block max-w-[150px] text-[13px] leading-[1.45] transition-colors ${
-                    isActive
-                      ? "font-semibold text-foreground"
-                      : "text-muted group-hover:text-foreground"
-                  }`}
-                >
-                  {s.title}
-                </span>
-              </button>
-            </li>
-          );
-        })}
+      {/* Service strip along the bottom edge */}
+      <ul className="mx-auto flex w-full max-w-[1320px] flex-wrap items-center justify-center gap-x-10 gap-y-4 px-6 pt-2 pb-9 md:px-10 xl:justify-between">
+        {STRIP.map((item) => (
+          <li
+            key={item.label}
+            className="flex items-center gap-2.5 text-[12px] font-semibold tracking-[0.16em] text-white/70 uppercase"
+          >
+            {item.icon}
+            {item.label}
+          </li>
+        ))}
       </ul>
     </section>
   );
 }
 
-function RequestForm() {
-  const [notice, setNotice] = useState("");
-
+function StatCard() {
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        // No endpoint is wired up yet — say so rather than faking a success state.
-        setNotice("This form is not connected yet. Call +91 90000 00000.");
-      }}
-      className="bg-[#06101f]/90 p-6 backdrop-blur-sm md:p-7"
-    >
-      <h2 className="text-[13px] font-semibold text-white">Send a request</h2>
-
-      <div className="mt-5 space-y-3">
-        <Field id="req-name" label="Your name" autoComplete="name" />
-        <Field
-          id="req-phone"
-          label="Your phone"
-          type="tel"
-          autoComplete="tel"
+    <div className="flex w-fit items-center gap-4 rounded-2xl bg-white p-3 pr-6 shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+      <div className="relative h-16 w-20 shrink-0 overflow-hidden rounded-xl">
+        <Image
+          src="/profile/p11-2.jpg"
+          alt=""
+          fill
+          sizes="80px"
+          className="object-cover"
         />
-
-        <div>
-          <label htmlFor="req-type" className="sr-only">
-            Project type
-          </label>
-          <select
-            id="req-type"
-            name="type"
-            defaultValue=""
-            className="w-full border border-white/15 bg-transparent px-4 py-3 text-[12px] text-white/80 outline-none focus:border-accent"
-          >
-            <option value="" disabled className="bg-[#06101f]">
-              Project type
-            </option>
-            <option value="house" className="bg-[#06101f]">
-              Private house
-            </option>
-            <option value="commercial" className="bg-[#06101f]">
-              Commercial
-            </option>
-            <option value="interior" className="bg-[#06101f]">
-              Interior fit-out
-            </option>
-          </select>
-        </div>
       </div>
-
-      <button
-        type="submit"
-        className="mt-5 w-full cursor-pointer bg-accent px-5 py-3.5 text-[11px] font-semibold tracking-[0.14em] text-on-accent uppercase transition-opacity hover:opacity-90"
-      >
-        Send a request
-      </button>
-
-      <p
-        aria-live="polite"
-        className="mt-3 text-[10px] leading-[1.6] text-white/50"
-      >
-        {notice || "We reply within one working day."}
-      </p>
-    </form>
-  );
-}
-
-function Field({
-  id,
-  label,
-  type = "text",
-  autoComplete,
-}: {
-  id: string;
-  label: string;
-  type?: string;
-  autoComplete?: string;
-}) {
-  return (
-    <div>
-      <label htmlFor={id} className="sr-only">
-        {label}
-      </label>
-      <input
-        id={id}
-        name={id.replace("req-", "")}
-        type={type}
-        required
-        autoComplete={autoComplete}
-        placeholder={label}
-        className="w-full border border-white/15 bg-transparent px-4 py-3 text-[12px] text-white outline-none placeholder:text-white/40 focus:border-accent"
-      />
+      <div>
+        <p className="text-[26px] leading-none font-bold text-foreground">
+          55+
+        </p>
+        <p className="mt-1.5 max-w-[180px] text-[12px] leading-[1.4] text-muted">
+          Projects completed across Bengaluru &amp; Ramanagara
+        </p>
+      </div>
     </div>
   );
 }
 
-function CtaButton({
-  href,
-  label,
-  variant,
-}: {
-  href: string;
-  label: string;
-  variant: "accent" | "ghost";
-}) {
+function FeaturedCard() {
   return (
-    <a
-      href={href}
-      className={`group flex items-center gap-4 px-7 py-4 text-[12px] font-semibold tracking-[0.1em] uppercase transition-colors ${
-        variant === "accent"
-          ? "bg-accent text-on-accent hover:bg-white hover:text-foreground"
-          : "border border-white/35 text-white hover:bg-white hover:text-foreground"
-      }`}
-    >
-      {label}
-      <span className="flex h-6 w-6 items-center justify-center bg-on-accent/15 transition-colors group-hover:bg-on-accent/20">
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden
-          className="h-3.5 w-3.5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+    <article className="w-full max-w-[340px] self-center rounded-3xl bg-white p-3 shadow-[0_24px_60px_rgba(0,0,0,0.35)] lg:justify-self-end">
+      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+        <Image
+          src="/profile/p19-2.jpg"
+          alt="Completed two-storey house in Ramanagara lit at night with wall washers and warm interior light"
+          fill
+          sizes="320px"
+          className="object-cover"
+        />
+        <span className="absolute top-3 left-3 rounded-full bg-white/90 px-3 py-1 text-[10px] font-semibold tracking-[0.14em] text-foreground uppercase">
+          Completed
+        </span>
+      </div>
+
+      <div className="px-2 pt-4 pb-2">
+        <div className="flex items-center gap-3">
+          <span className="block h-11 w-11 shrink-0 overflow-hidden rounded-xl">
+            <Image
+              src="/logo-card.png"
+              alt=""
+              width={1200}
+              height={1094}
+              unoptimized
+              className="h-full w-full object-contain"
+            />
+          </span>
+          <div>
+            <p className="text-[13px] font-semibold text-foreground">
+              Deepak CM
+            </p>
+            <p className="text-[11px] text-muted">
+              Proprietor, Advika Constructions
+            </p>
+          </div>
+        </div>
+
+        <h2 className="mt-4 text-[17px] leading-snug font-bold text-foreground">
+          Modern Residence
+        </h2>
+        <p className="mt-1.5 flex items-center gap-1.5 text-[12.5px] text-muted">
+          <PinIcon />
+          Ramanagara, Karnataka
+        </p>
+
+        <a
+          href="#projects"
+          className="mt-5 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[12.5px] font-semibold text-white transition-colors hover:bg-accent hover:text-on-accent"
         >
-          <path d="M7 17L17 7M9 7h8v8" />
-        </svg>
-      </span>
-    </a>
+          View Details
+          <ArrowIcon className="h-3.5 w-3.5" />
+        </a>
+      </div>
+    </article>
   );
 }
 
-function SlideButton({
-  direction,
-  onClick,
-}: {
-  direction: "prev" | "next";
-  onClick: () => void;
-}) {
+function ArrowIcon({ className }: { className: string }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={direction === "prev" ? "Previous slide" : "Next slide"}
-      className="flex h-11 w-11 cursor-pointer items-center justify-center border border-white/30 text-white transition-colors hover:border-accent hover:bg-accent"
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
-      <svg
-        viewBox="0 0 24 24"
-        aria-hidden
-        className="h-4 w-4"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d={direction === "prev" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"} />
-      </svg>
-    </button>
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
   );
 }
 
-function TypedWord({
-  text,
-  className = "",
-  speed = 90,
-}: {
-  text: string;
-  className?: string;
-  speed?: number;
-}) {
-  // Starts fully rendered so the server HTML carries the real word, then the
-  // client retypes it — no hydration mismatch and no empty heading for crawlers.
-  const [shown, setShown] = useState(text);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let interval = 0;
-    let i = 0;
-
-    // Clearing and typing happen inside callbacks, never in the effect body.
-    const frame = window.requestAnimationFrame(() => {
-      setShown("");
-      interval = window.setInterval(() => {
-        i += 1;
-        setShown(text.slice(0, i));
-        if (i >= text.length) window.clearInterval(interval);
-      }, speed);
-    });
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.clearInterval(interval);
-    };
-  }, [text, speed]);
-
+function PinIcon() {
   return (
-    <span aria-label={text} className={`relative inline-block ${className}`}>
-      {/* Reserves the final width so the line never reflows mid-type */}
-      <span aria-hidden className="invisible">
-        {text}
-      </span>
-      <span aria-hidden className="absolute inset-0 whitespace-pre">
-        {shown}
-      </span>
-    </span>
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden
+      className="h-3.5 w-3.5 shrink-0 text-accent"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" />
+      <circle cx="12" cy="9.5" r="2.5" />
+    </svg>
+  );
+}
+
+const iconProps = {
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.5,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+  className: "h-5 w-5",
+  "aria-hidden": true,
+};
+
+function PlanIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M3 5.5 12 3l9 2.5v13L12 21l-9-2.5z" />
+      <path d="M12 3v18" />
+      <path d="M7 9.5h2M15 9.5h2M7 14h2M15 14h2" />
+    </svg>
+  );
+}
+
+function BuildingIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M3 21h18" />
+      <path d="M6 21V6l12-3v18" />
+      <path d="M9.5 8.5h5M9.5 12h5M9.5 15.5h5" />
+    </svg>
+  );
+}
+
+function SofaIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M3 18v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5" />
+      <path d="M5 11V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4" />
+      <path d="M3 18h18M5 18v2M19 18v2" />
+    </svg>
+  );
+}
+
+function KeyIcon() {
+  return (
+    <svg {...iconProps}>
+      <circle cx="8" cy="15" r="4" />
+      <path d="M11 12l9-9M17 6l3 3M14.5 8.5l2 2" />
+    </svg>
+  );
+}
+
+function CubeIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z" />
+      <path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" />
+    </svg>
+  );
+}
+
+function TrophyIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M8 4h8v5a4 4 0 0 1-8 0z" />
+      <path d="M8 6H5a3 3 0 0 0 3 3M16 6h3a3 3 0 0 1-3 3" />
+      <path d="M12 13v4M8.5 20h7M9.5 17h5v3h-5z" />
+    </svg>
   );
 }

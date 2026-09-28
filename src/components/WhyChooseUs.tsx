@@ -9,26 +9,26 @@ type Feature = {
 
 const FEATURES: Feature[] = [
   {
-    title: "Licensed & insured crews",
+    title: "Turnkey design & build",
     description:
-      "Certified site engineers and fully insured teams on every project, from foundation to final handover.",
+      "Every aspect of the project managed from the initial concept to the final handover, for smooth execution.",
+    icon: <BlueprintIcon />,
+  },
+  {
+    title: "Skilled workforce",
+    description:
+      "Engineers, architects and skilled technicians working to rigorous standards and local regulations for structural integrity and safety.",
     icon: <HelmetIcon />,
   },
   {
-    title: "On time, on budget",
+    title: "Real-time progress updates",
     description:
-      "Fixed schedules and transparent costing, with weekly progress reports so there are no surprises.",
+      "Regular updates and access to project progress, with timelines and budgets coordinated for timely completion.",
     icon: <ScheduleIcon />,
-  },
-  {
-    title: "Turnkey design & build",
-    description:
-      "Architecture, structure, MEP and interiors handled under one contract and one point of contact.",
-    icon: <BlueprintIcon />,
   },
 ];
 
-const PROOF = ["In-house crews", "Fixed schedules", "25+ years on site"];
+const PROOF = ["Established 2016", "55+ projects delivered", "Awards 2021 & 2022"];
 
 export default function WhyChooseUs() {
   return (
@@ -42,10 +42,10 @@ export default function WhyChooseUs() {
         className="absolute inset-0 opacity-[0.04] [background-image:linear-gradient(to_right,#06101f_1px,transparent_1px),linear-gradient(to_bottom,#06101f_1px,transparent_1px)] [background-size:64px_64px]"
       />
 
-      <div className="relative mx-auto grid max-w-[1180px] items-center gap-14 lg:grid-cols-2 lg:gap-20">
+      <div className="relative mx-auto grid max-w-[1280px] items-center gap-14 lg:grid-cols-2 lg:gap-20">
         {/* Left: copy + CTA */}
         <div className="from-left lg:pr-6">
-          <p className="reveal inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-ink uppercase">
+          <p className="reveal inline-flex items-center gap-2 text-[12px] font-semibold tracking-[0.2em] text-ink uppercase">
             <svg
               viewBox="0 0 24 24"
               aria-hidden
@@ -61,11 +61,11 @@ export default function WhyChooseUs() {
             id="why-choose-us-heading"
             className="reveal mt-6 text-[clamp(1.9rem,4vw,3rem)] leading-[1.12] font-extrabold tracking-[-0.025em]"
           >
-            Everything you need
+            Design and construction,
             <br />
-            to plan, build and deliver
+            from concept
             <br />
-            <span className="block">in one place</span>
+            <span className="block">to completion</span>
           </h2>
 
           <span
@@ -73,17 +73,18 @@ export default function WhyChooseUs() {
             className="reveal reveal-1 mt-7 block h-[3px] w-14 bg-accent"
           />
 
-          <p className="reveal reveal-1 mt-7 max-w-[400px] text-[13.5px] leading-[1.85] text-muted">
-            Residential towers, commercial fit-outs and industrial builds
-            delivered by in-house crews. One contract, one accountable team, and
-            a finish that holds up long after handover.
+          <p className="reveal reveal-1 mt-7 max-w-[430px] text-[15px] leading-[1.9] text-muted">
+            Architects, engineers and construction professionals under one
+            roof, blending innovative architectural design with precise
+            construction execution, and staying on with maintenance and
+            warranty support after handover.
           </p>
 
           <ul className="reveal reveal-2 mt-8 flex flex-wrap gap-2">
             {PROOF.map((item) => (
               <li
                 key={item}
-                className="border border-line bg-background px-4 py-2 text-[11.5px] font-medium tracking-[0.04em] text-foreground/75"
+                className="border border-line bg-background px-4 py-2.5 text-[13px] font-medium tracking-[0.04em] text-foreground/75"
               >
                 {item}
               </li>
@@ -93,7 +94,7 @@ export default function WhyChooseUs() {
           <div className="reveal reveal-3 mt-10 flex flex-wrap items-center gap-6">
             <a
               href="#contact"
-              className="group flex items-center gap-4 bg-accent py-4 pr-4 pl-7 text-[11px] font-semibold tracking-[0.16em] text-on-accent uppercase transition-opacity hover:opacity-90"
+              className="group flex items-center gap-4 bg-accent py-4 pr-4 pl-7 text-[12px] font-semibold tracking-[0.16em] text-on-accent uppercase transition-opacity hover:opacity-90"
             >
               Request a quote
               <span className="flex h-7 w-7 items-center justify-center bg-on-accent/15">
@@ -114,7 +115,7 @@ export default function WhyChooseUs() {
 
             <a
               href="#services"
-              className="border-b-2 border-foreground/30 pb-1 text-[12.5px] font-semibold tracking-[0.06em] text-foreground transition-colors hover:border-accent hover:text-ink"
+              className="border-b-2 border-foreground/30 pb-1 text-[14px] font-semibold tracking-[0.06em] text-foreground transition-colors hover:border-accent hover:text-ink"
             >
               See how we work
             </a>
@@ -131,8 +132,8 @@ export default function WhyChooseUs() {
 
           <div className="from-right relative h-[340px] overflow-hidden md:h-[460px] lg:h-[520px]">
             <Image
-              src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1400&q=80"
-              alt="Construction team reviewing plans on an active building site"
+              src="/profile/p01-1.jpg"
+              alt="Completed Advika Constructions house with a grey and white façade and landscaped front garden"
               fill
               sizes="(min-width: 1024px) 560px, 100vw"
               className="object-cover"
@@ -146,9 +147,9 @@ export default function WhyChooseUs() {
           {/* Accent badge anchored to the photo */}
           <div className="absolute right-0 -bottom-5 hidden bg-accent px-6 py-4 text-on-accent shadow-[0_16px_40px_rgba(20,17,15,0.22)] lg:block">
             <span className="block text-[1.7rem] leading-none font-bold">
-              625+
+              55+
             </span>
-            <span className="mt-1.5 block text-[10px] font-semibold tracking-[0.16em] text-white/85 uppercase">
+            <span className="mt-1.5 block text-[11px] font-semibold tracking-[0.16em] text-white/85 uppercase">
               Projects delivered
             </span>
           </div>
@@ -171,14 +172,14 @@ export default function WhyChooseUs() {
 
                 <div>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-[10px] font-bold tracking-[0.14em] text-ink tabular-nums">
+                    <span className="text-[11px] font-bold tracking-[0.14em] text-ink tabular-nums">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <h3 className="text-[13.5px] font-semibold">
+                    <h3 className="text-[15px] font-semibold">
                       {feature.title}
                     </h3>
                   </div>
-                  <p className="mt-1.5 text-[11.5px] leading-[1.7] text-muted">
+                  <p className="mt-2 text-[13px] leading-[1.7] text-muted">
                     {feature.description}
                   </p>
                 </div>

@@ -69,7 +69,7 @@ export default function Testimonials() {
       aria-labelledby="testimonials-heading"
       className="bg-surface px-6 py-24 md:px-14 lg:py-28"
     >
-      <div className="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:gap-20">
+      <div className="mx-auto grid max-w-[1280px] gap-12 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)] lg:gap-20">
         {/* Left: heading and controls */}
         <div className="from-left lg:pt-6">
           <p className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-ink uppercase">

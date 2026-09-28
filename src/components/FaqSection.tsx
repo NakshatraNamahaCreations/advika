@@ -1,3 +1,5 @@
+import { EMAIL, EMAIL_HREF, PHONE, PHONE_HREF } from "@/lib/contact";
+
 type Faq = {
   question: string;
   answer: string;
@@ -5,44 +7,44 @@ type Faq = {
 
 const FAQS: Faq[] = [
   {
-    question: "Do you build the entire project in-house?",
+    question: "Do you handle both design and construction?",
     answer:
-      "Civil, structural and finishing works are carried out by our own crews. Specialist packages such as lifts, façade glazing and HVAC commissioning go to long-standing subcontractors we have worked with for over a decade — but they report to our site manager, not to you.",
+      "Yes. Advika Constructions & Architects offers a design-build approach: our architects, engineers and construction professionals take your project from the first sketch to the final handover under one roof.",
   },
   {
-    question: "What happens if the site conditions change?",
+    question: "Can I see the design before construction starts?",
     answer:
-      "Every contract carries a documented variation process. If ground conditions, drawings or approvals change, you get a written cost and schedule impact within five working days, and nothing proceeds until you sign it off.",
+      "Yes. We work from conceptual sketches to detailed plans with you, optimise the layout through space planning, and prepare realistic 3D visualizations so you can see the final outcome before construction begins.",
   },
   {
-    question: "Are your crews licensed and insured?",
+    question: "Do you help choose materials and finishes?",
     answer:
-      "Yes. All site engineers hold current certification, plant operators are separately licensed, and we carry contractor's all-risk plus third-party liability cover on every project. Certificates are shared at contract signing.",
+      "We guide you in choosing quality, durable, visually appealing and environmentally friendly materials and finishes as part of our architectural design and planning service.",
   },
   {
-    question: "How do you handle project delays?",
+    question: "Who will be working on my site?",
     answer:
-      "Programmes are built with float against monsoon and approval windows. You receive a weekly progress report against the baseline, so slippage shows up in week one rather than at handover — and liquidated damages are written into our contracts, not just yours.",
+      "A project manager and site engineers lead every site. Civil work is carried out by our masonry, centering, bar bending, plastering and concrete mixing crews under experienced head mesthris, and finishing is handled by our electrical, plumbing, carpentry, granite and tile, painting and fabrication teams.",
   },
   {
-    question: "Which regions do you work in?",
+    question: "How will I know how my project is progressing?",
     answer:
-      "We operate across nine states, with permanent site offices in Delhi NCR, Pune and Hyderabad. Projects outside these regions are taken on above a minimum contract value, since we mobilise our own crews rather than hiring locally.",
+      "We provide regular, real-time updates and access to project progress, and coordinate timelines, budgets and communication with you throughout, for transparency and timely completion.",
   },
   {
-    question: "What types of projects do you take on?",
+    question: "What happens after handover?",
     answer:
-      "Residential towers, commercial fit-outs, warehousing and light industrial builds. We do not take on heavy infrastructure, roads or marine works.",
+      "We offer post-construction services, including maintenance and warranty support, to ensure your continued satisfaction.",
   },
   {
-    question: "Can you work from our architect's drawings?",
+    question: "Do you take on interior projects?",
     answer:
-      "Yes, and most of our work arrives that way. We review the drawing set for constructability before pricing and flag anything that will cause trouble on site while it is still cheap to change.",
+      "Yes. Our interiors portfolio includes modular kitchens, living rooms, bedrooms, wardrobes, false ceilings and pooja rooms. See the Interiors tab in our projects above.",
   },
   {
-    question: "How is payment structured?",
+    question: "Where have you built?",
     answer:
-      "Against measured milestones, certified by your project manager or an independent quantity surveyor. We do not ask for large advances — mobilisation is typically capped at ten percent.",
+      "We have completed 55+ projects, with 15+ more underway, across Bengaluru, Ramanagara, Channapatna, Bidadi and Makali. Our work was recognised with awards in 2021 and 2022.",
   },
 ];
 
@@ -51,12 +53,14 @@ export default function FaqSection() {
     <section
       id="faq"
       aria-labelledby="faq-heading"
-      className="bg-background px-6 py-24 md:px-14 lg:py-32"
+      className="bg-background px-6 pt-10 pb-24 md:px-14 lg:pt-14 lg:pb-32"
     >
-      <div className="mx-auto grid max-w-[1180px] gap-14 lg:grid-cols-2 lg:gap-20">
+      <div className="mx-auto grid max-w-[1280px] gap-14 lg:grid-cols-2 lg:gap-20">
         {/* Left: heading + contact */}
         <div className="from-left lg:sticky lg:top-24 lg:self-start">
-          <p className="text-[13px] text-muted">FAQ</p>
+          <p className="text-[14px] font-medium tracking-[0.06em] text-muted">
+            FAQ
+          </p>
 
           <h2
             id="faq-heading"
@@ -65,14 +69,21 @@ export default function FaqSection() {
             Quick answers to questions you may have
           </h2>
 
-          <div className="mt-12 text-[13px] leading-[1.7] text-foreground">
+          <div className="mt-12 text-[15px] leading-[1.8] text-foreground">
             <p>Can&apos;t find what you&apos;re looking for?</p>
             <p>Contact us here:</p>
             <a
-              href="mailto:hello@advika.build"
+              href={EMAIL_HREF}
               className="mt-1 inline-block font-medium text-ink underline decoration-accent decoration-2 underline-offset-4 transition-opacity hover:opacity-75"
             >
-              hello@advika.build
+              {EMAIL}
+            </a>
+            <br />
+            <a
+              href={PHONE_HREF}
+              className="mt-2 inline-block font-medium text-ink underline decoration-accent decoration-2 underline-offset-4 transition-opacity hover:opacity-75"
+            >
+              {PHONE}
             </a>
           </div>
         </div>
@@ -84,7 +95,7 @@ export default function FaqSection() {
               key={faq.question}
               className="group border-t border-line last:border-b"
             >
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-8 py-6 text-[14px] leading-[1.5] font-medium transition-colors hover:text-ink [&::-webkit-details-marker]:hidden">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-8 py-6 text-[16px] leading-[1.5] font-semibold transition-colors hover:text-ink [&::-webkit-details-marker]:hidden">
                 {faq.question}
                 <span
                   aria-hidden
@@ -94,7 +105,7 @@ export default function FaqSection() {
                   <span className="absolute top-0 left-1/2 h-4 w-px -translate-x-1/2 bg-current" />
                 </span>
               </summary>
-              <p className="max-w-[520px] pr-8 pb-7 text-[13px] leading-[1.8] text-muted">
+              <p className="max-w-[560px] pr-8 pb-7 text-[15px] leading-[1.85] text-muted">
                 {faq.answer}
               </p>
             </details>

@@ -4,32 +4,32 @@ import type { ReactNode } from "react";
 type Stat = { value: string; label: string };
 
 const STATS: Stat[] = [
-  { value: "625+", label: "Projects completed" },
-  { value: "200+", label: "Happy clients" },
-  { value: "25+", label: "Years experience" },
-  { value: "60+", label: "Team members" },
+  { value: "55+", label: "Projects completed" },
+  { value: "15+", label: "Ongoing projects" },
+  { value: "2016", label: "Established" },
+  { value: "2021–22", label: "Award winning" },
 ];
 
 type Service = { title: string; description: string; icon: ReactNode };
 
 const SERVICES: Service[] = [
   {
-    title: "Exterior & façade",
+    title: "Architectural design & planning",
     description:
-      "Structural envelopes, cladding and glazing detailed to survive monsoon and sun without losing their line.",
+      "Concept sketches, space planning, 3D visualization and material selection, settled with you before construction begins.",
+    icon: <PlanIcon />,
+  },
+  {
+    title: "Construction & project execution",
+    description:
+      "Turnkey delivery from concept to handover, with project management, skilled crews and real-time progress updates.",
     icon: <FacadeIcon />,
   },
   {
-    title: "Interior fit-out",
+    title: "Interiors",
     description:
-      "Joinery, services and finishes coordinated on one programme, so trades never queue behind each other.",
+      "Kitchens, living rooms, bedrooms, wardrobes and pooja rooms, designed and finished by the same team.",
     icon: <InteriorIcon />,
-  },
-  {
-    title: "Landscape works",
-    description:
-      "Hardscape, drainage and planting handled as part of the build rather than an afterthought at handover.",
-    icon: <LandscapeIcon />,
   },
 ];
 
@@ -48,7 +48,7 @@ export default function StatsServices() {
           className="absolute inset-0 opacity-[0.14] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:56px_56px]"
         />
 
-        <dl className="reveal relative mx-auto grid max-w-[1080px] grid-cols-2 gap-y-10 px-6 text-center text-white md:grid-cols-4 md:px-14">
+        <dl className="reveal relative mx-auto grid max-w-[1180px] grid-cols-2 gap-y-10 px-6 text-center text-white md:grid-cols-4 md:px-14">
           {STATS.map((stat) => (
             <div key={stat.label}>
               <dt className="sr-only">{stat.label}</dt>
@@ -67,10 +67,10 @@ export default function StatsServices() {
 
       {/* Dark services card overlapping the band, beside the render */}
       <div className="relative z-10 px-6 pb-16 md:px-14 lg:pb-24">
-        <div className="mx-auto grid max-w-[1180px] items-end gap-10 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] lg:gap-4">
+        <div className="mx-auto grid max-w-[1280px] items-end gap-10 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] lg:gap-4">
           <div className="from-left -mt-28 bg-ink p-8 text-white md:-mt-36 md:p-10 lg:-mt-44">
             <h2 className="text-[13px] font-bold tracking-[0.2em] uppercase">
-              Our great services
+              Our services
             </h2>
 
             <ul className="mt-8 space-y-8">
@@ -137,13 +137,12 @@ function InteriorIcon() {
   );
 }
 
-function LandscapeIcon() {
+function PlanIcon() {
   return (
     <svg {...iconProps}>
-      <path d="M3 20h18" />
-      <path d="M12 20V9" />
-      <path d="M12 9c0-2.5-1.6-4-4-4 0 2.5 1.6 4 4 4z" />
-      <path d="M12 12c0-2.5 1.6-4 4-4 0 2.5-1.6 4-4 4z" />
+      <path d="M3 5.5 12 3l9 2.5v13L12 21l-9-2.5z" />
+      <path d="M12 3v18" />
+      <path d="M7 9.5h2M15 9.5h2M7 14h2M15 14h2" />
     </svg>
   );
 }

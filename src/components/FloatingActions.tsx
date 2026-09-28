@@ -1,5 +1,6 @@
-const WHATSAPP_NUMBER = "919000000000";
-const WHATSAPP_MESSAGE = "Hi AdviconIN, I would like to discuss a project.";
+import { WHATSAPP_NUMBER } from "@/lib/contact";
+
+const WHATSAPP_MESSAGE = "Hi Advicon, I would like to discuss a project.";
 
 export default function FloatingActions() {
   return (

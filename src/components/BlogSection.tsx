@@ -76,7 +76,7 @@ export default function BlogSection() {
       aria-labelledby="news-heading"
       className="bg-background px-6 py-24 md:px-14 lg:py-28"
     >
-      <div className="mx-auto max-w-[1180px]">
+      <div className="mx-auto max-w-[1280px]">
         {/* Heading row */}
         <div className="flex flex-wrap items-end justify-between gap-8">
           <div className="from-left">

@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AdviconIN — Passion at building your dream",
+  title: "AdviconIN — Advika Constructions & Architects",
   description:
-    "General contracting for residential, commercial and industrial projects since 1998.",
+    "Advika Constructions & Architects, established in 2016: a design-build firm integrating architectural design, construction and interiors, with 55+ projects across Bengaluru and Ramanagara.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
